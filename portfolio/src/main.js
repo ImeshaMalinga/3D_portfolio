@@ -6,7 +6,7 @@ const scene = new THREE.Scene();
 
 //add camera to the scene
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.y = 5;
+camera.position.z = 10;
 scene.add(camera);
 
 //add controls
@@ -21,7 +21,7 @@ const floorTexture = textureLoader.load('../public/stone_pathway_02_4k.blend/tex
 const backgroundTexture = textureLoader.load('../public/beautiful-shining-stars-night-sky.jpg');
 
 // Define wall geometry and material
-const wallGeometry = new THREE.BoxGeometry(10, 10, 1);
+const wallGeometry = new THREE.BoxGeometry(15, 10, 1);
 const wallMaterial = new THREE.MeshStandardMaterial({ color: 0x808080 });
 wallMaterial.map = wallTexture;
 
@@ -56,23 +56,17 @@ const walls = [
         z: -5,
         rotation: 0
     },
-    {
-        name: 'wall2',
-        x: 0,
-        y: 0,
-        z: 5,
-        rotation: 0
-    },
+    
     {
         name: 'wall3',
-        x: 4.5,
+        x: 7.5,
         y: 0,
         z: 0,
         rotation: Math.PI / 2
     },
     {
         name: 'wall4',
-        x: -4.5,
+        x: -7.5,
         y: 0,
         z: 0,
         rotation: Math.PI / 2
@@ -98,7 +92,7 @@ scene.add(ceilingMesh);
 const loader = new GLTFLoader();
 const gltf = await loader.loadAsync( '../public/models/potted_plant_01.glb' );
 scene.add(gltf.scene);
-gltf.scene.position.set(10, -4.5, 0);
+gltf.scene.position.set(7,-4.5, 10);
 gltf.scene.scale.set(5, 5, 5);
 console.log(gltf.scene);
 
@@ -134,7 +128,7 @@ window.addEventListener('click', (event) => {
 //Add table to the scene
 const table = await loader.loadAsync('../public/models/office_table_desk.glb');
 table.scene.position.set(-1, -4.5, -4);
-table.scene.scale.set(3, 3, 3);
+table.scene.scale.set(4.5, 3, 3);
 scene.add(table.scene);
 
 
@@ -158,6 +152,18 @@ const ceilingLight = new THREE.PointLight(0xffffff, 100, 0);
 ceilingLight.position.set(0, 4, 0);
 scene.add(ceilingLight);
 
+// Add details to the monitor screen
+
+
+//Add plane to one of wall to display the portfolio
+const planeGeometry = new THREE.PlaneGeometry(6, 3.5);
+const planeMaterial = new THREE.MeshBasicMaterial({ color: 0x3b403b, side: THREE.DoubleSide });
+const AboutScreenMesh = new THREE.Mesh(planeGeometry, planeMaterial);
+AboutScreenMesh.position.set(-6.9, 0, 2);
+AboutScreenMesh.rotation.y = Math.PI / 2;
+AboutScreenMesh.scale.set(1.4, 1.4, 1);
+scene.add(AboutScreenMesh);
+
 //render the scene with given camera
 const canvas = document.querySelector('.canvas');
 const renderer = new THREE.WebGLRenderer({ canvas }, { antialias: true });
@@ -171,6 +177,7 @@ const eventloop = () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
 
 };
+
 
 eventloop();
 
