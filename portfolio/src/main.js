@@ -164,6 +164,12 @@ AboutScreenMesh.rotation.y = Math.PI / 2;
 AboutScreenMesh.scale.set(1.4, 1.4, 1);
 scene.add(AboutScreenMesh);
 
+const displayButton = new THREE.Mesh(planeGeometry, planeMaterial);
+displayButton.position.set(-6.9, 0, 2);
+displayButton.rotation.y = Math.PI / 2;
+displayButton.scale.set(1.4, 1.4, 1);
+scene.add(displayButton);
+
 //render the scene with given camera
 const canvas = document.querySelector('.canvas');
 const renderer = new THREE.WebGLRenderer({ canvas }, { antialias: true });
