@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { plane } from 'three/examples/jsm/Addons.js';
 
 const scene = new THREE.Scene();
 
@@ -19,6 +20,10 @@ const textureLoader = new THREE.TextureLoader();
 const wallTexture = textureLoader.load('../public/blank-concrete-white-wall-texture-background.jpg');
 const floorTexture = textureLoader.load('../public/stone_pathway_02_4k.blend/textures/stone_pathway_02_diff_4k.jpg');
 const backgroundTexture = textureLoader.load('../public/beautiful-shining-stars-night-sky.jpg');
+const AboutTexture = textureLoader.load('../public/About_page.png'); 
+const screenTexture_1 = textureLoader.load('../public/Monitor_1.png');
+const screenTexture_2 = textureLoader.load('../public/Monitor_2.png');
+const screenTexture_3 = textureLoader.load('../public/Monitor_3.png');
 
 // Define wall geometry and material
 const wallGeometry = new THREE.BoxGeometry(15, 10, 1);
@@ -94,7 +99,6 @@ const gltf = await loader.loadAsync( '../public/models/potted_plant_01.glb' );
 scene.add(gltf.scene);
 gltf.scene.position.set(7,-4.5, 10);
 gltf.scene.scale.set(5, 5, 5);
-console.log(gltf.scene);
 
 //Add Lamp to the scene and make it clikable to turn on and off the light
 const lamp = await loader.loadAsync('../public/models/tabel_lapm_-_lowpoly.glb');
@@ -111,32 +115,52 @@ const mouse = new THREE.Vector2();
 let lampOn = true;
 
 window.addEventListener('click', (event) => {
-        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
-        raycaster.setFromCamera(mouse, camera);
+    raycaster.setFromCamera(mouse, camera);
+    const intersects = raycaster.intersectObject(lamp.scene, true);
 
-        const intersects = raycaster.intersectObject(lamp.scene, true);
-
-        if (intersects.length > 0) {
-            lampOn = !lampOn;
-            lampLigth.intensity = lampOn ? 60 : 0;
-            console.log('Lamp toggled:', lampOn);
-        }
+    if (intersects.length > 0) {
+        lampOn = !lampOn;
+        lampLigth.intensity = lampOn ? 60 : 0;
+        console.log('Lamp toggled:', lampOn);
+    }
+    
+    const intersectsScreen = raycaster.intersectObject(screenMesh, true);
+    if (intersectsScreen.length > 0) {
+        screenMaterial.map = screenTexture_2; 
+        setTimeout(() => {
+            screenMaterial.map = screenTexture_3; 
+        }, 5000);
+        setTimeout(() => {
+            screenMaterial.map = screenTexture_1; 
+        },10000);
+    }
 });
 
 //Add table to the scene
 const table = await loader.loadAsync('../public/models/office_table_desk.glb');
-table.scene.position.set(-1, -4.5, -4);
+table.scene.position.set(0, -4.5, -4);
 table.scene.scale.set(4.5, 3, 3);
 scene.add(table.scene);
 
 
 //Add monitor to the scene
-const monitor = await loader.loadAsync('../public/models/psx_monitor.glb');
-monitor.scene.position.set(-0.3, -1.7, -4);
-monitor.scene.scale.set(5,5,5);
+const monitor = await loader.loadAsync('../public/models/computer_monitor.glb');
+monitor.scene.position.set(0, -1.5, -4);
+monitor.scene.scale.set(0.3, 0.3, 0.3);
+monitor.scene.rotation.y = -Math.PI / 2;
 scene.add(monitor.scene);
+
+// Add a plane to the monitor screen
+const screenGeometry = new THREE.PlaneGeometry(1.5, 0.9);
+const screenMaterial = new THREE.MeshStandardMaterial({ color: 0x03fc07, side: THREE.DoubleSide });
+screenMaterial.map = screenTexture_1;
+const screenMesh = new THREE.Mesh(screenGeometry, screenMaterial);
+screenMesh.position.set(0, 0.15, -3.45);
+screenMesh.scale.set(2.33,2.45,2);
+scene.add(screenMesh);
 
 // Soft overall light
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
@@ -152,23 +176,15 @@ const ceilingLight = new THREE.PointLight(0xffffff, 100, 0);
 ceilingLight.position.set(0, 4, 0);
 scene.add(ceilingLight);
 
-// Add details to the monitor screen
-
-
 //Add plane to one of wall to display the portfolio
 const planeGeometry = new THREE.PlaneGeometry(6, 3.5);
-const planeMaterial = new THREE.MeshBasicMaterial({ color: 0x3b403b, side: THREE.DoubleSide });
+const planeMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff, side: THREE.DoubleSide ,opacity: 10, transparent: false});
+planeMaterial.map = AboutTexture;
 const AboutScreenMesh = new THREE.Mesh(planeGeometry, planeMaterial);
 AboutScreenMesh.position.set(-6.9, 0, 2);
 AboutScreenMesh.rotation.y = Math.PI / 2;
 AboutScreenMesh.scale.set(1.4, 1.4, 1);
 scene.add(AboutScreenMesh);
-
-const displayButton = new THREE.Mesh(planeGeometry, planeMaterial);
-displayButton.position.set(-6.9, 0, 2);
-displayButton.rotation.y = Math.PI / 2;
-displayButton.scale.set(1.4, 1.4, 1);
-scene.add(displayButton);
 
 //render the scene with given camera
 const canvas = document.querySelector('.canvas');
