@@ -25,6 +25,7 @@ const screenTexture_1 = textureLoader.load('../public/Monitor_1.png');
 const screenTexture_2 = textureLoader.load('../public/Monitor_2.png');
 const screenTexture_3 = textureLoader.load('../public/Monitor_3.png');
 
+
 // Define wall geometry and material
 const wallGeometry = new THREE.BoxGeometry(15, 10, 1);
 const wallMaterial = new THREE.MeshStandardMaterial({ color: 0x808080 });
@@ -186,9 +187,19 @@ AboutScreenMesh.rotation.y = Math.PI / 2;
 AboutScreenMesh.scale.set(1.4, 1.4, 1);
 scene.add(AboutScreenMesh);
 
+scene.fog = new THREE.FogExp2(0x0a0a12, 0.015); // subtle depth
+
 //render the scene with given camera
 const canvas = document.querySelector('.canvas');
 const renderer = new THREE.WebGLRenderer({ canvas }, { antialias: true });
+
+[screenTexture_1, screenTexture_2, screenTexture_3, AboutTexture, wallTexture, floorTexture]
+  .forEach(t => {
+    t.colorSpace = THREE.SRGBColorSpace;
+    t.anisotropy = renderer.capabilities.getMaxAnisotropy();
+  });
+
+
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.render(scene, camera);
 
