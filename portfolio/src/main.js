@@ -1,7 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { plane } from 'three/examples/jsm/Addons.js';
 
 const scene = new THREE.Scene();
 
@@ -164,17 +163,20 @@ screenMesh.scale.set(2.33,2.45,2);
 scene.add(screenMesh);
 
 // Soft overall light
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+const ambientLight = new THREE.AmbientLight(0xfff4e5, 0.6);
 scene.add(ambientLight);
 
 // Main light (sunlight)
-const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
+const directionalLight = new THREE.DirectionalLight(0xfff4e5, 1.5);
 directionalLight.position.set(5, 10, 7);
+directionalLight.castShadow = true;
+directionalLight.shadow.mapSize.set(2048, 2048);
 scene.add(directionalLight);
 
 // Light from ceiling (like a bulb)
-const ceilingLight = new THREE.PointLight(0xffffff, 100, 0);
+const ceilingLight = new THREE.PointLight(0xfff0dd, 40, 20);
 ceilingLight.position.set(0, 4, 0);
+ceilingLight.castShadow = true;
 scene.add(ceilingLight);
 
 //Add plane to one of wall to display the portfolio
@@ -189,9 +191,9 @@ scene.add(AboutScreenMesh);
 
 scene.fog = new THREE.FogExp2(0x0a0a12, 0.015); // subtle depth
 
-//render the scene with given camera
+//render the scene with given camera and polish the scene
 const canvas = document.querySelector('.canvas');
-const renderer = new THREE.WebGLRenderer({ canvas }, { antialias: true });
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
 
 [screenTexture_1, screenTexture_2, screenTexture_3, AboutTexture, wallTexture, floorTexture]
   .forEach(t => {
@@ -199,8 +201,10 @@ const renderer = new THREE.WebGLRenderer({ canvas }, { antialias: true });
     t.anisotropy = renderer.capabilities.getMaxAnisotropy();
   });
 
-
-renderer.setPixelRatio(window.devicePixelRatio);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.render(scene, camera);
 
 const eventloop = () => {
