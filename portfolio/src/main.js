@@ -15,13 +15,13 @@ controls.update();
 
 //texture loader
 const textureLoader = new THREE.TextureLoader();
-const wallTexture = textureLoader.load('../public/blank-concrete-white-wall-texture-background.jpg');
-const floorTexture = textureLoader.load('../public/stone_pathway_02_4k.blend/textures/stone_pathway_02_diff_4k.jpg');
-const backgroundTexture = textureLoader.load('../public/beautiful-shining-stars-night-sky.jpg');
-const AboutTexture = textureLoader.load('../public/About_page.png'); 
-const screenTexture_1 = textureLoader.load('../public/Monitor_1.png');
-const screenTexture_2 = textureLoader.load('../public/Monitor_2.png');
-const screenTexture_3 = textureLoader.load('../public/Monitor_3.png');
+const wallTexture = textureLoader.load('blank-concrete-white-wall-texture-background.jpg');
+const floorTexture = textureLoader.load('stone_pathway_02_4k.blend/textures/stone_pathway_02_diff_4k.jpg');
+const backgroundTexture = textureLoader.load('beautiful-shining-stars-night-sky.jpg');
+const AboutTexture = textureLoader.load('About_page.png'); 
+const screenTexture_1 = textureLoader.load('Monitor_1.png');
+const screenTexture_2 = textureLoader.load('Monitor_2.png');
+const screenTexture_3 = textureLoader.load('Monitor_3.png');
 
 
 // Define wall geometry and material
@@ -94,29 +94,29 @@ scene.add(ceilingMesh);
 
 //Add a plant pot in to the scene
 const loader = new GLTFLoader();
-const pot = await loader.loadAsync( '../public/models/potted_plant_01.glb' );
+const pot = await loader.loadAsync( 'models/potted_plant_01.glb' );
 scene.add(pot.scene);
 pot.scene.position.set(7,-4.5, 10);
 pot.scene.scale.set(5, 5, 5);
 
 //Add trees in the scene
-const tree1 = await loader.loadAsync('../public/models/Tree.glb');
+const tree1 = await loader.loadAsync('models/Tree.glb');
 scene.add(tree1.scene);
 tree1.scene.position.set(15, -4.5, 8);
 tree1.scene.scale.set(2, 2, 2);
 
-const tree2 = await loader.loadAsync('../public/models/Tree.glb');
+const tree2 = await loader.loadAsync('models/Tree.glb');
 scene.add(tree2.scene);
 tree2.scene.position.set(19, -4.5, 12);
 tree2.scene.scale.set(2, 2, 3);
 
-const tree3 = await loader.loadAsync('../public/models/Tree.glb');
+const tree3 = await loader.loadAsync('models/Tree.glb');
 scene.add(tree3.scene);
 tree3.scene.position.set(-20, -4.5,-20);
 tree3.scene.scale.set(3, 3, 3);
 
 // Add car to the scene
-const car = await loader.loadAsync('../public/models/dodge_black.glb');
+const car = await loader.loadAsync('models/dodge_black.glb');
 scene.add(car.scene);
 car.scene.position.set(-18, -4.5,7)
 car.scene.scale.set(0.015, 0.015, 0.015);
@@ -124,7 +124,7 @@ car.scene.scale.set(0.015, 0.015, 0.015);
 console.log(car.scene);
 
 //Add Lamp to the scene and make it clikable to turn on and off the light
-const lamp = await loader.loadAsync('../public/models/tabel_lapm_-_lowpoly.glb');
+const lamp = await loader.loadAsync('models/tabel_lapm_-_lowpoly.glb');
 scene.add(lamp.scene);
 lamp.scene.scale.set(0.2, 0.2, 0.2);
 lamp.scene.position.set(-3, -1, -3.5);
@@ -133,27 +133,27 @@ scene.add(lampLight);
 lampLight.position.copy(lamp.scene.position);
 
 //Add table to the scene
-const table = await loader.loadAsync('../public/models/office_table_desk.glb');
+const table = await loader.loadAsync('models/office_table_desk.glb');
 table.scene.position.set(0, -4.5, -4);
 table.scene.scale.set(4.5, 3, 3);
 scene.add(table.scene);
 
 //Add monitor to the scene
-const monitor = await loader.loadAsync('../public/models/computer_monitor.glb');
+const monitor = await loader.loadAsync('models/computer_monitor.glb');
 monitor.scene.position.set(0, -1.5, -4);
 monitor.scene.scale.set(0.3, 0.3, 0.3);
 monitor.scene.rotation.y = -Math.PI / 2;
 scene.add(monitor.scene);
 
 //Add chair to the scene
-const chair = await loader.loadAsync('../public/models/chair.glb');
+const chair = await loader.loadAsync('models/chair.glb');
 chair.scene.position.set(0, -4.5, 0);
 chair.scene.scale.set(0.3, 0.3, 0.3);
 chair.scene.rotation.y = 3 * Math.PI / 4;
 scene.add(chair.scene);
 
 // Add a bookshelf to the scene
-const bookshelf = await loader.loadAsync('../public/models/bookshelf.glb');
+const bookshelf = await loader.loadAsync('models/bookshelf.glb');
 bookshelf.scene.position.set(6, -1.5, -3);
 bookshelf.scene.scale.set(2, 3, 2);
 scene.add(bookshelf.scene);
