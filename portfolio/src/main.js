@@ -11,6 +11,7 @@ scene.add(camera);
 
 //add controls
 const controls = new OrbitControls(camera, document.querySelector('.canvas'));
+controls.maxDistance = 300;
 controls.update();
 
 //texture loader
@@ -32,13 +33,13 @@ wallMaterial.map = wallTexture;
 
 //add a background
 backgroundTexture.repeat.set(2, 2);
-backgroundTexture.RepeatWrapping = THREE.MirroredRepeatWrapping;
+backgroundTexture.RepeatWrapping = THREE.RepeatWrapping;
 backgroundTexture.wrapS = THREE.RepeatWrapping;
 backgroundTexture.wrapT = THREE.RepeatWrapping;
 scene.background = backgroundTexture;
 
 //add floor to the scene
-const floorGeometry = new THREE.PlaneGeometry(100, 100);
+const floorGeometry = new THREE.BoxGeometry(300, 300, 2);
 const floorMaterial = new THREE.MeshStandardMaterial({ color: 0x8B4513, side: THREE.DoubleSide });
 
 floorTexture.repeat.set(40, 40);
@@ -47,7 +48,7 @@ floorTexture.wrapT = THREE.RepeatWrapping;
 
 floorMaterial.map = floorTexture;
 const floorMesh = new THREE.Mesh(floorGeometry, floorMaterial);
-floorMesh.position.set(0, -4.5, 0);
+floorMesh.position.set(0, -5.5, 0);
 floorMesh.rotation.x = -Math.PI / 2;
 scene.add(floorMesh);
 
